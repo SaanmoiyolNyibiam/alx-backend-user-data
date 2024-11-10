@@ -5,7 +5,7 @@ This is a module that defines a filter datum function
 import re
 
 
-def filter_datum(fields, redaction, message, separator):
+def filter_datum(fields: list, redaction: str, message: str, separator: str) -> str:
     """
     Returns a log message obfuscated
     Arguments:
@@ -16,9 +16,8 @@ def filter_datum(fields, redaction, message, separator):
         is separating all fields in the log line (message)
     """
 
-    filtered_datum = message
+    filtered_datum: str = message
     for field in fields:
-        pattern = f"(?<={field}=)[^{separator}]+"
+        pattern: str = f"(?<={field}=)[^{separator}]+"
         filtered_datum = re.sub(pattern, redaction, filtered_datum)
-
     return filtered_datum
