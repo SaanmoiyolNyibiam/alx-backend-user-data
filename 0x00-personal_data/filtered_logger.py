@@ -3,9 +3,10 @@
 This is a module that defines a filter datum function
 """
 import re
+from typing import List
 
 
-def filter_datum(fields: list, redaction: str, msg: str, sep: str) -> str:
+def filter_datum(fields: List[str], redaction: str, msg: str, sep: str) -> str:
     """
     Returns a log msg obfuscated
     Arguments:
@@ -15,9 +16,7 @@ def filter_datum(fields: list, redaction: str, msg: str, sep: str) -> str:
         sep: a string representing by which character
         is separating all fields in the log line (msg)
     """
-
-    filtered_datum: str = msg
     for field in fields:
-        pattern: str = f"(?<={field}=)[^{sep}]+"
-        filtered_datum = re.sub(pattern, redaction, filtered_datum)
-    return filtered_datum
+        msg = re.sub(f'{field}=.*?{sep}',
+                     f'{field}={redaction}{sep}', msg)
+    return msg
